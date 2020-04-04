@@ -1,0 +1,124 @@
+@font-face {
+    font-family: "bilabong";
+    src: url("../font/Billabong.ttf") format("truetype");
+}
+
+body,
+html {
+    background-color: #fafafa;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.logo {
+    font-size: 35px;
+    font-family: "bilabong", sans-serif;
+    color: #363636;
+}
+
+.search {
+    position: absolute;
+    margin: auto;
+    top: 10px;
+    left: 45%;
+    width: 200px;
+    height: 100px;
+}
+
+.white {
+    color: white;
+}
+
+.black {
+    color: black;
+}
+
+.navbar>.containeur {
+    min-height: 3.25rem;
+    align-items: stretch;
+    margin: auto;
+    display: flex;
+    width: 95%;
+}
+
+.bandau {
+    background-color: #ffffff;
+    border: 1px solid #dbdbdb;
+}
+
+.profile {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-size: contain;
+}
+
+.icone a {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    transition: all .1s linear;
+    margin-left: 1vw;
+}
+
+.icone .home {
+    background-color: black;
+    mask-image: url('../icone/home.svg');
+}
+
+.icone .home:hover {
+    background-color: #363636;
+    mask-image: url('../icone/home.svg');
+    mask-size: contain;
+}
+
+.icone .home_active {
+    background-color: black;
+    mask-image: url('../icone/is_home.svg');
+}
+
+.icone .likes {
+    background-color: black;
+    mask-image: url('../icone/like.svg');
+    mask-size: contain;
+}
+
+.icone .likes:hover {
+    background-color: #ec7063;
+    mask-image: url('../icone/is_like.svg');
+}
+
+.icone .photo {
+    background-color: black;
+    mask-image: url('../icone/photo.svg');
+    mask-size: contain;
+}
+
+.icone .photo_active {
+    background-color: black;
+    mask-image: url('../icone/is_photo.svg');
+}
+
+.icone .photo:hover {
+    background-color: #363636;
+    mask-image: url('../icone/is_photo.svg');
+}
+
+.icone .logout {
+    background-color: black;
+    mask-image: url('../icone/logout.svg');
+    mask-size: contain;
+}
+
+.icone .logout:hover {
+    background-color: #ec7063;
+    mask-image: url('../icone/is_logout.svg');
+}
+
+img {
+    max-width: 180px;
+}
+
+input[type=file] {
+    padding: 10px;
+    background: #2d2d2d;
+}

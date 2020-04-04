@@ -1,0 +1,66 @@
+@font-face {
+    font-family: "bilabong";
+    src: url("../font/Billabong.ttf") format("truetype");
+}
+
+.title_connexion {
+    font-size: 65px;
+    font-family: "bilabong", sans-serif;
+}
+
+.black {
+    color: #414141;
+}
+
+.red {
+    color: #e74c3c;
+}
+
+
+.background-for {
+    background-size: cover;
+    background-position: 100% 30%;
+    background-repeat: no-repeat;
+    background-image: url("../backgroud/forget.jpg");
+}
+
+.background-connect {
+    background-size: cover;
+    background-position: 100% 25%;
+    background-repeat: no-repeat;
+    background-image: url("../backgroud/connect.jpg");
+}
+
+.background-creat {
+    background-size: cover;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    background-image: url("../backgroud/creat.jpg");
+}
+
+.interactive-bg {
+    height: 96.4vh;
+    margin-top: -50px;
+    -webkit-box-shadow: inset 24px 4px 64px -24px rgb(0, 0, 0);
+    -moz-box-shadow: inset 24px 4px 64px -24px rgb(0, 0, 0);
+    box-shadow: inset 24px 4px 64px -24px rgb(0, 0, 0);
+    padding: 0px;
+}
+
+@media (max-width: 769px) {
+    .interactive-bg {
+        display: none
+    }
+}
+
+.login-logo {
+    margin: 0 auto;
+    margin-bottom: 50px;
+    max-height: 100px;
+}
+
+
+
+.columns {
+    margin: 0px;
+}
