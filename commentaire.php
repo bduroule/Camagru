@@ -34,7 +34,7 @@
 			<div class="tile is-parent">
 				<div class="columns tile is-child box">
 					<div class="column" style="height: 720px;">
-						<div style="width:100%; height: 100%; background-image: url('img/<?= $result[0]['image_url']; ?>.jpg'); background-size: cover; background-position: center;"> </div>
+						<div style="width:100%; height: 100%; background-image: url('img/<?= $result[0]['image_url']; ?>'); background-size: cover; background-position: center;"> </div>
 					</div>
 					<div class="column is-4" style="height:660px; overflow-x: auto;">
 						<!-- COMMENTAIRE -->

@@ -9,8 +9,6 @@
 			$token = base_convert(hash('sha256', time() . mt_rand()), 16, 36);
 			$req = $bdd->prepare('INSERT INTO token(user_uid, token_creat) VALUES (?, ?)');
 			$req->execute(array($result['user_uid'], $token));
-			if (!$req)
-				var_dump($bdd->errorInfo());
 			$header="MIME-Version: 1.0\r\n";
 			$header.='From:"Bedumagru"<bduroule101@gamil.com>'."\n";
 			$header.='Content-Type:text/html; charset="uft-8"'."\n";
@@ -26,7 +24,7 @@
 			</html>
 			';
 			mail($email, "reinitialiser mot de passe", $message, $header);
-			//header("Location: index.php?page=connect");
+			header("Location: index.php?page=connect");
 		}
 		else
 			var_dump($bdd->errorInfo());

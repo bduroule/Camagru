@@ -101,6 +101,12 @@
 				include "email_valid.php";
 			else if (@$_GET['page'] == "change_passwd")
 				include "change_passwd.php";
+			else if (@$_GET['page'] == "upload_post")
+				include "upload_post.php";
+			else if (@$_GET['page'] == "change_info")
+				include "change_info.php";
+			else if (@$_GET['page'] == "delete_post")
+				include "delete_post.php";
 			else
 				include 'galery.php';
 		?>

@@ -1,7 +1,7 @@
 <div class="container">
 <?php
   $tmp = 0;
-    $query = $bdd->query("SELECT gallery.img_uid, gallery.nb_comm, gallery.img_user, gallery.nb_like, gallery.img_name, users.user_name, users.user_img
+    $query = $bdd->query("SELECT gallery.img_uid, gallery.nb_comm, gallery.img_user, gallery.nb_like, gallery.img_name, users.user_name, users.user_img, users.user_uid
                           FROM gallery 
                           INNER JOIN users 
                           ON users.user_uid = gallery.img_user
@@ -27,7 +27,7 @@
       <a id="img-<?= $ligne['img_uid']; ?>"></a>
         <div class="card" style="border-radius: 5px">
           <div class="card-image">
-            <div style="background-image:url('img/<?=$ligne['img_name'];?>.jpg'); border-radius: 5px 5px 0px 0px; background-size:cover; width:100%; height:320px;">
+            <div style="background-image:url('img/<?=$ligne['img_name'];?>'); border-radius: 5px 5px 0px 0px; background-size:cover; width:100%; height:320px;">
             </div>
           </div>
           <div class="card-content">
@@ -35,7 +35,7 @@
               <div class="media-left">
                 <div style="display: flex; align-items: center; width: auto; height: 48px; line-height: 48px; vertical-align: middle;">
                 <a href="#"></a>
-                  <img src="img/<?= $ligne['user_img'] ?>" style="border-radius: 50%; height: 32px; float: left;" alt="Placeholder image">
+                  <a href="index.php?page=profile&uid=<?= $ligne['user_uid']; ?>"><img src="img/<?= $ligne['user_img'] ?>" style="border-radius: 50%; height: 32px; float: left;" alt="Placeholder image">
                 </a>
                   <button onclick="window.location='./?page=like_post&img_id=<?= $ligne['img_uid']; ?>';" class="button" style="margin-left: 6px; border: none;">
                     <span class="icon">
