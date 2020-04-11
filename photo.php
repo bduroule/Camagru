@@ -1,3 +1,9 @@
+<?php
+	if (!isset($_SESSION['user_uid'])) {
+		header('location: '.$_SERVER['HTTP_REFERER'].'');
+    die ();
+	}
+?>
   <div class="container">
     <div class="tile is-ancestor">
       <div class="tile is-vertical is-10">
@@ -59,7 +65,7 @@
     </form>
 
 <!--<input id="input-file" type='file' onchange="readURL(this);" />-->
-<script src="javascript/video.js"></script>
+<script type="text/javascript" src="javascript/video.js"></script>
 
 </div>
 </div> 

@@ -1,3 +1,10 @@
+<?php
+	if (!isset($_SESSION['user_uid'])) {
+		header('location: '.$_SERVER['HTTP_REFERER'].'');
+        die ();
+	}
+?>
+
 <div class="columns">
 	<div class="container profile">
 		<div class="modal" id="myModal">
@@ -109,8 +116,8 @@
 		  <p class="stat-key">likes</p>
 		</div>
 		<div class="column is-2-tablet is-4-mobile has-text-centered">
-		  <p class="stat-val">3</p>
-		  <p class="stat-key">comm</p>
+		  <p class="stat-val"><?= $result['nb_com'] ?></p>
+		  <p class="stat-key">comm recu</p>
 		</div>
 	  </div>
 	</div>
@@ -118,7 +125,7 @@
 <!--  CARD  -->
 <?php
   $tmp = 0;
-    $query = $bdd->prepare("SELECT * FROM gallery WHERE img_user = ?");
+    $query = $bdd->prepare("SELECT * FROM gallery WHERE img_user = ? ORDER BY gallery.img_date DESC");
 	$query->execute(array($result['user_uid']));
 	
   	while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
@@ -134,7 +141,7 @@
 			<?php 
 				if ($result['user_uid'] == $_SESSION['user_uid']) :
 			?>
-				<a href="index.php?page=delete_post&uid=<?= $ligne['img_uid'] ?>"><span style="background-color: rgba(231, 76, 60, .5);" class="is-medium delete close"></span>
+				<a href="index.php?page=delete_post&uid=<?= $ligne['img_uid'] ?>"><span style="background-color: rgba(231, 76, 60, .5);" class="is-medium is-pulled-right delete close"></span>
 			<?php 
 				endif;
 			?>
@@ -160,7 +167,7 @@
                     <span class="icon">
                       <img src="icone/comment.svg" />
                     </span>
-                    <span>
+                    <span style="color: black">
 					<?= $ligne['nb_comm'] ?>
                     </span>
                   </button>
@@ -184,5 +191,5 @@
       endwhile;
     ?>
   </div>
-  	<script src="javascript/profile.js"></script>
+  	<script type="text/javascript" src="javascript/profile.js"></script>
 </div>

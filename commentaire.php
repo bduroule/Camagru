@@ -9,7 +9,8 @@
 			users.user_name			AS `post_username`,
 			users.user_uid			AS `post_userid`, 
 			users.user_img			AS `post_userimage`, 
-			comments.comment		AS `comment`, 
+			comments.comment		AS `comment`,
+			comments.uid			AS `comm_uid`,
 			comments.user_uid		AS `comment_userid`, 
 			comments.date			AS `comment_date`, 
 			user_comment.user_name	AS `comment_username`,
@@ -21,11 +22,13 @@
 			ON gallery.img_uid = comments.img_uid
 		LEFT JOIN users AS `user_comment`
 			ON comments.user_uid = user_comment.user_uid
-		WHERE gallery.img_uid = ?");
+		WHERE gallery.img_uid = ?
+		ORDER BY comments.date ASC");
 	$req->execute(array($_GET['img']));
 	$result = $req->fetchAll(PDO::FETCH_ASSOC);
 	$nb_comment = $result[0]['image_comms'];
 	if ($result) :
+
 ?>
 
 <div class="container">
@@ -36,7 +39,7 @@
 					<div class="column" style="height: 720px;">
 						<div style="width:100%; height: 100%; background-image: url('img/<?= $result[0]['image_url']; ?>'); background-size: cover; background-position: center;"> </div>
 					</div>
-					<div class="column is-4" style="height:660px; overflow-x: auto;">
+					<div class="column is-4" style="height:648px; overflow-x: auto;">
 						<!-- COMMENTAIRE -->
 						<?php
 							if ($nb_comment > 0) :
@@ -52,6 +55,15 @@
 								<div class="content">
 									<p>
 										<strong><?= $comment['comment_username']; ?></strong> <small><?= $comment['comment_date']; ?></small>
+										<?php 
+											if (isset($_SESSION['user_uid'])) :
+												if ($comment['comment_userid'] == $_SESSION['user_uid']) :
+										?>
+										<small><a href="index.php?page=delete_comm&uid=<?= $comment['comm_uid']; ?>" class="is-pulled-right delete"></a></small>
+										<?php 
+												endif;
+											endif;
+										?>
 										<br>
 										<?= $comment['comment']; ?>
 									</p>
@@ -69,8 +81,8 @@
 						?>
 						<article class="media" style="position:absolute; bottom:28px;">
 						<form action="?page=push_comment" method="post">
-						<div class="columns">
-							<div class="column">
+						<div class="columns is-gapless">
+							<div class="column is-2">
 								<figure class="media-left">
 									<p class="image is-48x48">
 									<img class="is-rounded" src="img/<?= $_SESSION['user_img']?>">
@@ -87,7 +99,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="column">
+							<div class="column is-3">
 								<div class="media-right">
 									<input type="submit" class="button is-dark"/>
 								</div>

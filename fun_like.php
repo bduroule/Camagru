@@ -1,5 +1,5 @@
 <?php
-    if (!isset($_GET['img_id']) || !isset($_SESSION['user_uid']) || !is_numeric($_GET['img_id']))
+    if (!isset($_GET['img_id']) || !isset($_SESSION['user_uid']))
     {
         header('location: '.$_SERVER['HTTP_REFERER'].'');
         die ();

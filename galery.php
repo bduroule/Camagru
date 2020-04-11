@@ -1,7 +1,7 @@
 <div class="container">
 <?php
   $tmp = 0;
-    $query = $bdd->query("SELECT gallery.img_uid, gallery.nb_comm, gallery.img_user, gallery.nb_like, gallery.img_name, users.user_name, users.user_img, users.user_uid
+    $query = $bdd->query("SELECT gallery.img_uid, gallery.img_date, gallery.nb_comm, gallery.img_user, gallery.nb_like, gallery.img_name, users.user_name, users.user_img, users.user_uid
                           FROM gallery 
                           INNER JOIN users 
                           ON users.user_uid = gallery.img_user
@@ -33,7 +33,8 @@
           <div class="card-content">
             <div class="media">
               <div class="media-left">
-                <div style="display: flex; align-items: center; width: auto; height: 48px; line-height: 48px; vertical-align: middle;">
+                <!-- BUTTON -->
+                <!-- <div style="display: flex; align-items: center; width: auto; height: 48px; line-height: 48px; vertical-align: middle;"> -->
                 <a href="#"></a>
                   <a href="index.php?page=profile&uid=<?= $ligne['user_uid']; ?>"><img src="img/<?= $ligne['user_img'] ?>" style="border-radius: 50%; height: 32px; float: left;" alt="Placeholder image">
                 </a>
@@ -41,7 +42,7 @@
                     <span class="icon">
                       <img src="icone/<?= $user_has_liked ? "is_" : ""; ?>like.svg" />
                     </span>
-                    <span>
+                    <span style="color: black">
                       <?= $ligne['nb_like'] ?>
                     </span>
                   </button>
@@ -50,7 +51,7 @@
                     <span class="icon">
                       <img src="icone/comment.svg" />
                     </span>
-                    <span>
+                    <span style="color: black">
                     <?= $ligne['nb_comm'] ?>
                     </span>
                     </a>
@@ -62,7 +63,8 @@
                     <span>
                     </span>
                   </button>
-                </div>
+                <!--</div> -->
+                <!-- END BUTTON -->
               </div>
             </div>
           </div>

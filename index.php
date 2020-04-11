@@ -18,7 +18,31 @@
 		<nav class="navbar is-fixed-top bandau" role="navigation" aria-label="main navigation">
 			<div class="container">
 				<div class="navbar-brand">
-					<a href="./" class="navbar-item logo black">Bedumagru</a>
+					<a href="./" class="navbar-item logo black" style="color: black">Bedumagru</a>
+				    <a id="button" onclick="clickButton()" value="0" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" style="margin-top: 1.8%;">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
+				</div>
+				<div id="menu" style="display: none;" id="navbar-menu-id" class="navbar-menu is-mobile is-active">
+					<div class="navbar-start">
+						<?php
+							if (!isset($_SESSION['user_uid'])) :
+						?>
+						<a class="navbar-item" href="?page=connect">se connecter</a>
+						<a class="navbar-item" href="?page=create">cree une compote</a>
+						<?php
+							else :
+						?>
+						<a class="navbar-item" href="?page=profile">Profile</a>
+						<a class="navbar-item" href="?page=like">Like</a>
+						<a class="navbar-item" href="?page=photo">Photo</a>
+						<a class="navbar-item" href="?page=deconection">Deconection</a>
+						<?php 
+							endif;
+						?>
+					</div>
 				</div>
 				<div class="navbar-menu">
 					<div class="navbar-end">
@@ -107,9 +131,11 @@
 				include "change_info.php";
 			else if (@$_GET['page'] == "delete_post")
 				include "delete_post.php";
+			else if (@$_GET['page'] == "delete_comm")
+				include "delete_comm.php";
 			else
 				include 'galery.php';
 		?>
 	</body>
-	<!-- <script type="text/javascript" src="tonfichier.js"></script> -->
+	<script type="text/javascript" src="javascript/burger_menu.js"></script>
 </html>

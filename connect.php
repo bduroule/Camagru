@@ -61,7 +61,7 @@
         <button class="button is-dark is-fullwidth is-vcentered" type="submit" value="OK">Login</button>
       </div>
       <div class="has-text-centered">
-        <a href="index.php?page=forget">mot de pass oublier ?</a>
+        <a href="index.php?page=forget" style="color: black">mot de pass oublier ?</a>
 	  </div>
 	</form>
     </section>

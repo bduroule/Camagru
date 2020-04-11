@@ -63,7 +63,7 @@
 		  <form action="index.php?page=create" method="post">
 	          <div class="field">
 	            <div class="control has-icons-right">
-	              <input class="input" type="login" name="login" placeholder="Identifian" require>
+	              <input id="login" onkeyup='javascript:isCharSet()' class="input" type="login" name="login" placeholder="Identifian" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-user"></i>
 	              </span>
@@ -73,7 +73,7 @@
 
 	          <div class="field">
 	            <div class="control has-icons-right">
-	              <input class="input" type="email" name="email" placeholder="Entrer votre addresse mail" require>
+	              <input class="input" onkeyup='javascript:passwdMetter()' id="email" type="email" name="email" placeholder="Entrer votre addresse mail" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-envelope"></i>
 	              </span>
@@ -83,16 +83,16 @@
 
 	          <div class="field">
 	            <div class="control has-icons-right">
-	              <input class="input" type="password" name="passwd" placeholder="taper votre mots de passe" require>
+	              <input  onkeyup='javascript:passwdMetter()' id="passwd" class="input"  type="password" name="passwd" placeholder="taper votre mots de passe" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-key"></i>
 	              </span>
 	            </div>
 	          </div>
-
+				  <progress style="display: none;" id="meter" class="progress is-primary is-small" value="0" max="100"></progress>
 			  <div class="field">
 	            <div class="control has-icons-right">
-	              <input class="input" type="password" name="checkpasswd" placeholder="retaper votre mot de passe" require>
+	              <input id="verif_passwd" onkeyup='javascript:isCharSet()' class="input" type="password" name="checkpasswd" placeholder="retaper votre mot de passe" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-key"></i>
 	              </span>
@@ -101,7 +101,7 @@
 	          </div>
 
 	          <div class="has-text-centered">
-	            <button class="is-fullwidth is-dark button is-vcentered" type="submit" value="OK">Sign Up!</button>
+	            <button id="valid" class="is-fullwidth is-dark button is-vcentered" type="submit" value="OK">Sign Up!</button>
 	          </div>
 		</form>
 
@@ -111,4 +111,5 @@
 
       </div>
     </div>
+	<script type="text/javascript" src="javascript/creat.js"></script>
 
