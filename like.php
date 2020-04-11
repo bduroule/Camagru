@@ -10,7 +10,7 @@
                           INNER JOIN gallery 
                             ON likes.like_post = gallery.img_uid
                           INNER JOIN users
-                            ON  likes.like_user = users.user_uid
+                            ON  likes.like_user = gallery.img_user
                           WHERE likes.like_user = ?
                           ");
   $query->execute(array($_SESSION['user_uid']));

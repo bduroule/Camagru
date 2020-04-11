@@ -63,7 +63,7 @@
 		  <form action="index.php?page=create" method="post">
 	          <div class="field">
 	            <div class="control has-icons-right">
-	              <input id="login" onkeyup='javascript:isCharSet()' class="input" type="login" name="login" placeholder="Identifian" require>
+	              <input id="login" onkeyup='javascript:isCharSet()' class="input" type="login" name="login" placeholder="Identifian" value="<?= isset($_POST['login']) ? $_POST['login'] : "" ?>" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-user"></i>
 	              </span>
@@ -73,7 +73,7 @@
 
 	          <div class="field">
 	            <div class="control has-icons-right">
-	              <input class="input" onkeyup='javascript:passwdMetter()' id="email" type="email" name="email" placeholder="Entrer votre addresse mail" require>
+	              <input class="input" onkeyup='javascript:passwdMetter()' id="email" type="email" name="email" placeholder="Entrer votre addresse mail" value="<?= isset($_POST['email']) ? $_POST['email'] : "" ?>" require>
 	              <span class="icon is-small is-right">
 	                <i class="fa fa-envelope"></i>
 	              </span>

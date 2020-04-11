@@ -3,9 +3,9 @@
 	$error = "";
 	if (isset($_POST['email']) && isset($_POST['passwd']))
 	{
-		$email = $_POST['email'];
-		$req = $bdd->prepare('SELECT * FROM users WHERE user_email = ? LIMIT 1');
-		$req->execute(array($email));
+		$email = htmlspecialchars($_POST['email']);
+		$req = $bdd->prepare('SELECT * FROM users WHERE (user_email = ? OR user_name = ?) LIMIT 1');
+		$req->execute(array($email, $email));
 		$result = $req->fetch(PDO::FETCH_ASSOC);
 		if ($result)
 		{
@@ -43,7 +43,7 @@
 	  <form action="index.php?page=connect" method="post">
       <div class="field">
         <div class="control has-icons-right">
-          <input class="input" name="email" type="email" placeholder="tapez votre email">
+          <input class="input" name="email" type="login" placeholder="tapez votre email" value="<?= isset($_POST['email']) ? $_POST['email'] : "" ?>">
           <span class="icon is-small is-right">
             <i class="fa fa-user"></i>
           </span>

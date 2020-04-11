@@ -3,20 +3,26 @@
 		header('location: '.$_SERVER['HTTP_REFERER'].'');
         die ();
 	}
+	if (!isset($_GET['uid'])) {
+		$req = $bdd->prepare('SELECT * FROM users WHERE user_uid = ? LIMIT 1');
+		$req->execute(array($_SESSION['user_uid']));
+	} else {
+		$req = $bdd->prepare('SELECT * FROM users WHERE user_uid = ? LIMIT 1');
+		$req->execute(array($_GET['uid']));
+	}
+	$result = $req->fetch(PDO::FETCH_ASSOC);
 ?>
-
 <div class="columns">
-	<div class="container profile">
+	<div class="container">
 		<div class="modal" id="myModal">
-			<br /><br /><br /><br /><br />
 	  <div class="modal-background"></div>
 	  <div class="modal-card">
 		<header class="modal-card-head">
 		  <p class="modal-card-title">Edit Preferences</p>
 		  <span id="close" class="delete close">&times;</span>
+		<form hidden action="index.php?page=change_info" method="post" enctype="multipart/form-data">
 		</header>
-		<form action="index.php?page=change_info" method="post" enctype="multipart/form-data">
-			<section class="modal-card-body">
+		<section class="modal-card-body">
 
 				<div class="columns is-vcentered">
 					<div class="column is-5">
@@ -36,22 +42,22 @@
 					</div>
 					<div class="column is-6">
 					<figure class="image is-128x128">
-						<img id="c-img" alt="your image" class="is-rounded" src="img/<?= $_SESSION['user_img']?>">
+						<img id="c-img" alt="your image" class="is-rounded displayed_i" src="img/<?= $_SESSION['user_img']?>">
 					</figure>
 					</div>
 				</div>
 
 				<label class="label">changer login</label>
 				<p class="control">
-					<input class="input" placeholder="Text input" name="login" type="text"></input>
+					<input class="input" placeholder="Text input" name="login" type="text" value="<?= $result['user_name']; ?>"></input>
 				</p>
 				<label class="label">changer email</label>
 				<p class="control has-icon has-icon-right">
-					<input class="input" placeholder="Text input" name="email" type="email"></input>
+					<input class="input" placeholder="Text input" name="email" type="email" value="<?= $result['user_email']; ?>"></input>
 				</p>
 				<label class="label">Description</label>
 				<p class="control">
-					<textarea class="textarea" name="description" placeholder="Describe Yourself!"></textarea>
+					<textarea class="textarea" name="description" placeholder="Describe Yourself!"><?= $result['u_describ']; ?></textarea>
 				</p>
 				<label class="label">changer mot de passe</label>
 				<p class="control">
@@ -62,12 +68,14 @@
  					<label for="com_email">Commentaire mail</label>
 				</div>
 
-			</section>
-			<footer class="modal-card-foot">
-        	  <button class="button is-dark modal-save" type="submit" name="submit" value="OK">Save changes</button>
-        	  <button class="button modal-cancel"  type="submit" name="submit" value="cancel">Cancel</button>
-        	</footer>
-		</form>
+		</section>
+		<footer class="modal-card-foot">
+    	  <button class="button is-dark modal-save" type="submit" name="submit" value="OK">Save changes</button>
+    	  <button class="button modal-cancel"  type="submit" name="submit" value="cancel">Cancel</button>
+    	</footer>
+			</form>
+		</div>
+		</div>
 		<!-- DEBUT PROFILE -->	
 <?php
 	if (!isset($_GET['uid'])) {
@@ -79,13 +87,11 @@
 	}
 	$result = $req->fetch(PDO::FETCH_ASSOC);
 ?>	
-	</div>
-  </div>
 	<div class="section profile-heading prof">
 	  <div class="columns is-mobile is-multiline">
-		<div class="column is-2">
+		<div class="column is-10-mobile is-2-tablet-only" style="margin-left: auto;  margin-right: auto;">
 		  <span class="header-icon user-profile-image">
-			<img src="img/<?=$result['user_img']?>" style="border-radius: 50%;"/>
+			<img src="img/<?=$result['user_img']?>" class="displayed_i" style="border-radius: 50%;"/>
 		  </span>
 		</div>
 		<div class="column is-4-tablet is-10-mobile name">

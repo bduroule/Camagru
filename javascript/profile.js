@@ -4,16 +4,17 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 btn.onclick = function() {
-  modal.style.display = "block";
+  modal.classList.add("is-active");
 }
 
 span.onclick = function() {
-  modal.style.display = "none";
+  console.log('test aaaaaah');
+  modal.classList.remove("is-active");
 }
 
 window.onclick = function(event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    modal.classList.remove("is-active");
   }
 } 
 
