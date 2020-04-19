@@ -5,6 +5,7 @@
       die ();
   }
     if (isset($_GET['uid'], $_POST['passwd']) AND !empty($_GET['uid'])) {
+      $_POST['passwd'] = htmlspecialchars($_POST['passwd']);
         $query = "SELECT * FROM token INNER JOIN users ON token.user_uid = users.user_uid
         WHERE token.token_creat = ?";
         $req = $bdd->prepare($query);
@@ -13,13 +14,17 @@
 		
         if ($_GET['uid'] == $result['token_creat']) {
             if ($_POST['passwd'] == $_POST['checkpasswd']) {
+              if (preg_match('#((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,}))#', $_POST['passwd']) || preg_match('#(?=.{19,})(?=.*[a-z])(?=.*[A-Z])#', $_POST['passwd'])) {
             	$passwd = password_hash($_POST['passwd'], PASSWORD_DEFAULT);
             	$query = "UPDATE users SET user_passwd = ? WHERE user_uid = ?";
             	$req = $bdd->prepare($query);
             	$req->execute(array($passwd, $result['user_uid']));
 
               	$req = $bdd->prepare('DELETE FROM token WHERE user_uid = ?');
-              	$req->execute(array($result['user_uid']));
+                $req->execute(array($result['user_uid']));
+              }
+              else
+                $err = 1;
             }
             else
                 $err = 1;

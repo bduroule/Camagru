@@ -5,6 +5,13 @@ var_dump($_POST);
 var_dump($_FILES);
 var_dump($_REQUEST);
 echo "</pre>";
+
+if (!isset($_SESSION['user_uid'])) {
+    header('location: '.$_SERVER['HTTP_REFERER'].'');
+    die ();
+}
+if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['token']) AND !empty($_POST['token'])) {
+    if ($_SESSION['token'] == $_POST['token']) {    
         if (isset($_FILES["input-file"]["name"]) && !empty($_FILES['input-file']['name'])) {
             echo "<pre>cdcdcdcdcdcdcdcdcdcdc</pre>";
             $target_dir = "img/";
@@ -22,9 +29,6 @@ echo "</pre>";
                     $uploadOk = 0;
                 }
             }
-            // Check if file already exists
-
-
             if (file_exists($target_file)) {
                 echo "Sorry, file already exists.";
                 $uploadOk = 0;
@@ -173,4 +177,10 @@ echo "</pre>";
             $req = $bdd->prepare('INSERT INTO gallery(img_name, img_user, img_uid) VALUES (?, ?, ?)');
             $req->execute(array($name, $user, $uid));
         }
+    }
+    else
+    echo "<script>alert('pas les memem')</script>";
+}
+else
+    echo "<script>alert('vide')</script>";
 ?>

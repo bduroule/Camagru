@@ -1,6 +1,7 @@
 <?php
 	if (isset($_POST['email']) AND !empty($_POST['email'])) {
-		$email = $_POST['email'];
+		$_POST['email'] = htmlspecialchars($_POST['email']);
+		$email = str_replace(array("\n","\r",PHP_EOL),'',$_POST['email']);
 		$req = $bdd->prepare('SELECT * FROM users WHERE user_email = ? LIMIT 1');
 		$req->execute(array($email));
 		$result = $req->fetch(PDO::FETCH_ASSOC);

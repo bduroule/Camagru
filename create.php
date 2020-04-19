@@ -12,8 +12,10 @@
 			}
    }
 	if (isset($_POST['login']) && isset($_POST['email']) && isset($_POST['passwd']) && isset($_POST['checkpasswd']) && !$err) {
+		$_POST['passwd'] = htmlspecialchars($_POST['passwd']);
+		$_POST['checkpasswd'] = htmlspecialchars($_POST['checkpasswd']);
 		if ($_POST['passwd'] == $_POST['checkpasswd']) {
-			if (strlen($_POST['passwd']) > 8) {
+			if (preg_match('#((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{7,}))#', $_POST['passwd']) || preg_match('#(?=.{19,})(?=.*[a-z])(?=.*[A-Z])#', $_POST['passwd'])) {
 				$passwd = password_hash($_POST['passwd'], PASSWORD_DEFAULT);
 				$login = htmlspecialchars($_POST['login']);
 				$email = htmlspecialchars($_POST['email']);

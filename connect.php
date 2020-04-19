@@ -3,6 +3,7 @@
 	$error = "";
 	if (isset($_POST['email']) && isset($_POST['passwd']))
 	{
+		$_POST['passwd'] = htmlspecialchars($_POST['passwd']);
 		$email = htmlspecialchars($_POST['email']);
 		$req = $bdd->prepare('SELECT * FROM users WHERE (user_email = ? OR user_name = ?) LIMIT 1');
 		$req->execute(array($email, $email));
@@ -19,6 +20,7 @@
 					$_SESSION['user_uid'] = $result['user_uid'];
 					$_SESSION['user_name'] = $result['user_name'];
 					$_SESSION['user_img'] = $result['user_img'];
+					$ticket = md5(mt_rand().random_bytes(32).microtime());
 					header('location: index.php');
 				}
 			}

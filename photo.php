@@ -2,7 +2,9 @@
 	if (!isset($_SESSION['user_uid'])) {
 		header('location: '.$_SERVER['HTTP_REFERER'].'');
     die ();
-	}
+  }
+  $token = md5(mt_rand().random_bytes(32));
+	$_SESSION['token'] = $token;
 ?>
   <div class="container">
     <div class="tile is-ancestor">
@@ -23,6 +25,7 @@
 
           <!-- END WEB-CAM -->
           <form id="form_push" action="index.php?page=upload_post" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="token" value="<?= $token ?>">
         </div>
       </div>
         <div class="tile is-parent is-2">

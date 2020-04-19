@@ -67,7 +67,7 @@ html {
 
 .icone .home:hover {
     background-color: #363636;
-    mask-image: url('../icone/home.svg');
+    mask-image: url('../icone/is_home.svg');
     mask-size: contain;
 }
 
@@ -83,6 +83,11 @@ html {
 }
 
 .icone .likes:hover {
+    background-color: #ec7063;
+    mask-image: url('../icone/is_like.svg');
+}
+
+.icone .like_active {
     background-color: #ec7063;
     mask-image: url('../icone/is_like.svg');
 }

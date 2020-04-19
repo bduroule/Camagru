@@ -1,6 +1,7 @@
 // Get the modal
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("myBtn");
+var back = document.getElementById("back-g");
 var span = document.getElementsByClassName("close")[0];
 
 btn.onclick = function() {
@@ -8,14 +9,11 @@ btn.onclick = function() {
 }
 
 span.onclick = function() {
-  console.log('test aaaaaah');
   modal.classList.remove("is-active");
 }
 
-window.onclick = function(event) {
-  if (event.target == modal) {
+back.onclick = function() {
     modal.classList.remove("is-active");
-  }
 } 
 
 function readURL(input) {

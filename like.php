@@ -4,16 +4,35 @@
     header('location: '.$_SERVER['HTTP_REFERER'].'');
         die ();
   }
+
+  $n_carrd_p = 8;
+	$total = $bdd->query('SELECT img_id FROM gallery');
+	$cardTotale = $total->rowCount();
+	$pageTotal = ceil($cardTotale / $n_carrd_p);
+	if (isset($_GET['npage']) AND !empty($_GET['npage'])) {
+		$_GET['npage'] = intval($_GET['npage']);
+		$this_page = $_GET['npage'];
+ 	}
+  	else {
+		$this_page = 1;
+ 	}
+  	$start = ($this_page - 1) * $n_carrd_p;
   $tmp = 0;
   $query = $bdd->prepare("SELECT gallery.img_uid, gallery.img_name, likes.like_user, gallery.nb_like, gallery.nb_comm, users.user_uid, users.user_img
                           FROM likes
                           INNER JOIN gallery 
                             ON likes.like_post = gallery.img_uid
                           INNER JOIN users
-                            ON  likes.like_user = gallery.img_user
-                          WHERE likes.like_user = ?
+                            ON  users.user_uid = gallery.img_user
+                          WHERE likes.like_user = :uid
+                          ORDER BY likes.like_date DESC
+                          LIMIT :start, :end
                           ");
-  $query->execute(array($_SESSION['user_uid']));
+  $query->bindParam(":start", $start, PDO::PARAM_INT);
+  $query->bindParam(":end", $n_carrd_p, PDO::PARAM_INT);
+  $query->bindParam(":uid", $_SESSION['user_uid'], PDO::PARAM_INT);
+  $query->execute();
+  echo '<div class="container">';
   while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
     if ($tmp > 3)
       $tmp = 0;
@@ -72,4 +91,6 @@
       $tmp++;
       endwhile;
     ?>
+    <div class="lasuitelasuitelasuite"></div>
+  	<script type="text/javascript" src="javascript/scroll.js"></script>
     </div>

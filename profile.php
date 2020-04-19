@@ -3,6 +3,10 @@
 		header('location: '.$_SERVER['HTTP_REFERER'].'');
         die ();
 	}
+
+	$token = md5(mt_rand().random_bytes(32));
+	$_SESSION['token'] = $token;
+
 	if (!isset($_GET['uid'])) {
 		$req = $bdd->prepare('SELECT * FROM users WHERE user_uid = ? LIMIT 1');
 		$req->execute(array($_SESSION['user_uid']));
@@ -15,12 +19,13 @@
 <div class="columns">
 	<div class="container">
 		<div class="modal" id="myModal">
-	  <div class="modal-background"></div>
+	  <div class="modal-background" id="back-g"></div>
 	  <div class="modal-card">
 		<header class="modal-card-head">
 		  <p class="modal-card-title">Edit Preferences</p>
 		  <span id="close" class="delete close">&times;</span>
 		<form hidden action="index.php?page=change_info" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="token" value="<?= $token ?>"/>
 		</header>
 		<section class="modal-card-body">
 
@@ -131,9 +136,34 @@
 <!--  CARD  -->
 <?php
   $tmp = 0;
-    $query = $bdd->prepare("SELECT * FROM gallery WHERE img_user = ? ORDER BY gallery.img_date DESC");
-	$query->execute(array($result['user_uid']));
+
+	$n_carrd_p = 8;
+	$total = $bdd->query('SELECT img_id FROM gallery');
+	$cardTotale = $total->rowCount();
+	$pageTotal = ceil($cardTotale / $n_carrd_p);
+	if (isset($_GET['npage']) AND !empty($_GET['npage'])) {
+		$_GET['npage'] = intval($_GET['npage']);
+		$this_page = $_GET['npage'];
+ 	}
+  	else {
+		$this_page = 1;
+ 	}
+  	$start = ($this_page - 1) * $n_carrd_p;
+
+    $query = $bdd->prepare("SELECT * FROM gallery 
+							WHERE img_user = :uid
+							ORDER BY gallery.img_date DESC
+							LIMIT :start, :end");
+	$query->bindParam(":start", $start, PDO::PARAM_INT);
+	$query->bindParam(":end", $n_carrd_p, PDO::PARAM_INT);
+	$query->bindParam(":uid", $result['user_uid'], PDO::PARAM_INT);
+	$query->execute();
+	if ($query->rowCount() <= 0)
+	{
+	  die ("empty");
+	}
 	
+	echo '<div class="container">';
   	while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
     if ($tmp > 3)
       $tmp = 0;
@@ -147,7 +177,7 @@
 			<?php 
 				if ($result['user_uid'] == $_SESSION['user_uid']) :
 			?>
-				<a href="index.php?page=delete_post&uid=<?= $ligne['img_uid'] ?>"><span style="background-color: rgba(231, 76, 60, .5);" class="is-medium is-pulled-right delete close"></span>
+				<a href="index.php?page=delete_post&uid=<?= $ligne['img_uid'] ?>&dd=<?= $token ?>"><span style="background-color: rgba(231, 76, 60, .5);" class="is-medium is-pulled-right delete close"></span>
 			<?php 
 				endif;
 			?>
@@ -169,7 +199,7 @@
                     </span>
                   </button>
                   <button class="button" style="margin-left: 6px; border: none;">
-				  	<a href="index.php?page=commentaire&img=<?= $ligne['img_uid']?>">
+				  	<a href="index.php?page=commentaire&img=<?= $ligne['img_uid']?>&dd=<?= $token ?>">
                     <span class="icon">
                       <img src="icone/comment.svg" />
                     </span>
@@ -197,5 +227,7 @@
       endwhile;
     ?>
   </div>
+  	<div class="lasuitelasuitelasuite"></div>
+  	<script type="text/javascript" src="javascript/scroll.js"></script>
   	<script type="text/javascript" src="javascript/profile.js"></script>
 </div>

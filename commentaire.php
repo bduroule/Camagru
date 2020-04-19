@@ -1,6 +1,6 @@
 <?php
+	$token = 0;
 			//gallery.nb_comms		AS `image_comments`, 
-			
 	$req = $bdd->prepare("SELECT 
 			gallery.img_name		AS `image_url`, 
 			gallery.nb_like			AS `image_likes`, 
@@ -27,6 +27,10 @@
 	$req->execute(array($_GET['img']));
 	$result = $req->fetchAll(PDO::FETCH_ASSOC);
 	$nb_comment = $result[0]['image_comms'];
+	if (isset($_SESSION['user_uid'])) {
+		$token = md5(mt_rand().random_bytes(32));
+		$_SESSION['token'] = $token;
+	}
 	if ($result) :
 
 ?>
@@ -59,7 +63,7 @@
 											if (isset($_SESSION['user_uid'])) :
 												if ($comment['comment_userid'] == $_SESSION['user_uid']) :
 										?>
-										<small><a href="index.php?page=delete_comm&uid=<?= $comment['comm_uid']; ?>" class="is-pulled-right delete"></a></small>
+										<small><a href="index.php?page=delete_comm&uid=<?= $comment['comm_uid']; ?>&dd=<?= $token ?>" class="is-pulled-right delete"></a></small>
 										<?php 
 												endif;
 											endif;
@@ -81,6 +85,7 @@
 						?>
 						<article class="media" style="position:absolute; bottom:28px;">
 						<form action="?page=push_comment" method="post">
+						<input type="hidden" name="token" value="<?= $token ?>">
 						<div class="columns is-gapless">
 							<div class="column is-2">
 								<figure class="media-left">

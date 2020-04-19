@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	include 'database.php';
-	header("content-type: text/html; charset=UTF-8"); 
+	header("content-type: text/html; charset=UTF-8");
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,13 +67,13 @@
 							</a>
 						</div>
 						<div class="navbar-item icone"> 
-							<a href="./" class="home <?php if(!@$_GET['page']) echo "home_active"; ?>"></a>
+							<a href="./" class="home <?= !@$_GET['page'] || @$_GET['page'] == "gallery" ? "home_active" : 0;?>"></a>
 						</div>
 						<div class="navbar-item icone">
-							<a href="?page=like" class="likes"></a>
+							<a href="?page=like" class="likes <?= @$_GET['page'] == "like" ? "like_active" : 0;?>"></a>
 						</div>
 						<div class="navbar-item icone">
-							<a href="?page=photo" class="photo"></a>
+							<a href="?page=photo" class="photo <?= @$_GET['page'] == "photo" ? "photo_active" : 0;?>"></a>
 						</div>
 						<div class="navbar-item icone">
 							<a href="?page=deconection" class="logout"></a>
@@ -100,39 +100,48 @@
 		</nav>
 		<br />
 		<div style="margin-top:62px"></div>
-		<?php 	
+		<?php
+			$droit = 0;
+			if (isset($_GET['page']) AND !empty($_GET['page'])) {
+				$_GET['page'] = str_replace("../","protect",$_GET['page']);
+				$_GET['page'] = str_replace(";","protect",$_GET['page']);
+				$_GET['page'] = str_replace("%","protect",$_GET['page']);
+			}
+			if (isset($_SESSION['user_uid']) AND !empty($_SESSION['user_uid'])) {
+				$droit = 1;
+			}
 			if (@$_GET['page'] == "create")
 				include "create.php";
 			else if (@$_GET['page'] == "connect")
 				include "connect.php";
-			else if (@$_GET['page'] == "deconection")
+			else if (@$_GET['page'] == "deconection" && $droit == 1)
 				include "deconection.php";
-			else if (@$_GET['page'] == "photo")
+			else if (@$_GET['page'] == "photo" && $droit == 1)
 				include "photo.php";
-			else if (@$_GET['page'] == "profile")
+			else if (@$_GET['page'] == "profile" && $droit == 1)
 				include "profile.php";
-			else if (@$_GET['page'] == "forget")
-				include "forget.php";
-			else if (@$_GET['page'] == "like_post")
+			else if (@$_GET['page'] == "like_post" && $droit == 1)
 				include "fun_like.php";
-			else if (@$_GET['page'] == "like")
+			else if (@$_GET['page'] == "like" && $droit == 1)
 				include "like.php";
+			else if (@$_GET['page'] == "push_comment" && $droit == 1)
+				include "push_comment.php";
+			else if (@$_GET['page'] == "upload_post" && $droit == 1)
+				include "upload_post.php";
+			else if (@$_GET['page'] == "change_info" && $droit == 1)
+				include "change_info.php";
+			else if (@$_GET['page'] == "delete_post" && $droit == 1)
+				include "delete_post.php";
+			else if (@$_GET['page'] == "delete_comm" && $droit == 1)
+				include "delete_comm.php";
 			else if (@$_GET['page'] == "commentaire")
 				include "commentaire.php";
-			else if (@$_GET['page'] == "push_comment")
-				include "push_comment.php";
-			else if (@$_GET['page'] == "email_valid")
-				include "email_valid.php";
 			else if (@$_GET['page'] == "change_passwd")
 				include "change_passwd.php";
-			else if (@$_GET['page'] == "upload_post")
-				include "upload_post.php";
-			else if (@$_GET['page'] == "change_info")
-				include "change_info.php";
-			else if (@$_GET['page'] == "delete_post")
-				include "delete_post.php";
-			else if (@$_GET['page'] == "delete_comm")
-				include "delete_comm.php";
+			else if (@$_GET['page'] == "forget")
+				include "forget.php";
+			else if (@$_GET['page'] == "email_valid")
+				include "email_valid.php";
 			else
 				include 'galery.php';
 		?>
