@@ -119,10 +119,6 @@ html {
     mask-image: url('../icone/is_logout.svg');
 }
 
-img {
-    max-width: 180px;
-}
-
 input[type=file] {
     padding: 10px;
     background: #2d2d2d;

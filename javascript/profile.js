@@ -3,6 +3,7 @@ var modal = document.getElementById("myModal");
 var btn = document.getElementById("myBtn");
 var back = document.getElementById("back-g");
 var span = document.getElementsByClassName("close")[0];
+console.log('test');
 
 btn.onclick = function() {
   modal.classList.add("is-active");

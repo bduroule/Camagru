@@ -1,5 +1,4 @@
 <?php
-    var_dump($_POST);
     if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['token']) AND !empty($_POST['token'])) {
         if ($_SESSION['token'] == $_POST['token']) {
             if (isset($_POST['submit']) AND $_POST['submit'] == 'OK') {
@@ -44,7 +43,7 @@
                     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
                     $check = getimagesize($_FILES["img_profil"]["tmp_name"]);
 
-                    $legalExt = array("jpg", "png", "jpeg");
+                    $legalExt = array(".jpg", ".png", ".jpeg");
 
                     if($check !== false) {
                         echo "File is an image - " . $check["mime"] . ".";
@@ -71,7 +70,6 @@
                     else {
                         $name = $_FILES["img_profil"]["tmp_name"];
                         if (move_uploaded_file($name, $target_file)) {
-                            echo "The file ". basename( $name). " has been uploaded.";
                             $uploadOk = 1;
                         }
                         else {

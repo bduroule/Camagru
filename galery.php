@@ -1,11 +1,7 @@
 <?php
-  include_once "database.php";
+  include_once "config/database.php";
 
   $token = 0;
-  if (isset($_SESSION['user_uid'])) {
-    $token = md5(mt_rand().random_bytes(32));
-    $_SESSION['token'] = $token;
-  }
   $n_carrd_p = 8;
   $total = $bdd->query('SELECT img_id FROM gallery');
   $cardTotale = $total->rowCount();
@@ -20,6 +16,9 @@
   }
   $start = ($this_page - 1) * $n_carrd_p;
   $tmp = 0;
+  if ($this_page > 1) {
+      session_start();
+  }
   $query = $bdd->prepare("SELECT gallery.img_uid, gallery.img_date, gallery.nb_comm, gallery.img_user, gallery.nb_like, gallery.img_name, users.user_name, users.user_img, users.user_uid
                         FROM gallery 
                         INNER JOIN users 
@@ -35,8 +34,16 @@
   {
     die ("empty");
   }
+  if (isset($_SESSION['user_uid'])) {
+    if ($this_page == 1) {
+      $token = md5(mt_rand().random_bytes(32));
+      $_SESSION['token'] = $token;
+    }
 
-
+    else {
+      $token = $_SESSION['token'];
+    }
+}
   echo '<div class="container">';
   while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
     if (isset($_SESSION['user_uid']))
@@ -63,8 +70,6 @@
             <div class="media">
               <div class="media-left">
                 <!-- BUTTON -->
-                <!-- <div style="display: flex; align-items: center; width: auto; height: 48px; line-height: 48px; vertical-align: middle;"> -->
-                <a href="#"></a>
                   <a href="index.php?page=profile&uid=<?= $ligne['user_uid']; ?>"><img src="img/<?= $ligne['user_img'] ?>" style="border-radius: 50%; height: 32px; float: left;" alt="Placeholder image">
                 </a>
                   <button onclick="window.location='./?page=like_post&img_id=<?= $ligne['img_uid']; ?>&dd=<?= $token ?>';" class="button" style="margin-left: 6px; border: none;">
@@ -92,7 +97,6 @@
                     <span>
                     </span>
                   </button>
-                <!--</div> -->
                 <!-- END BUTTON -->
               </div>
             </div>

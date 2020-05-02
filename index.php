@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include 'database.php';
+	include 'config/database.php';
 	header("content-type: text/html; charset=UTF-8");
 ?>
 <!DOCTYPE html>
@@ -8,6 +8,7 @@
   <head>
 	<meta charset="utf-8">
 	<title>Bedumagru</title>
+	<link rel="icon" type="image/png" href="icone/insta.png" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 	<link rel="stylesheet" href="./css/index.css">
 	<link rel="stylesheet" href="./css/connexion.css">
@@ -63,7 +64,7 @@
 						?>
 						<div class="navbar-item">
 							<a href="?page=profile" class="image">
-								<img src="img/<?=$_SESSION['user_img']?>" class="is-rounded" />
+								<img src="img/<?=$_SESSION['user_img']?>" class="is-rounded" style="width:auto;" />
 							</a>
 						</div>
 						<div class="navbar-item icone"> 

@@ -128,7 +128,7 @@
 		</div>
 		<div class="column is-2-tablet is-4-mobile has-text-centered">
 		  <p class="stat-val"><?= $result['nb_com'] ?></p>
-		  <p class="stat-key">comm recu</p>
+		  <p class="stat-key">comments</p>
 		</div>
 	  </div>
 	</div>
@@ -137,8 +137,9 @@
 <?php
   $tmp = 0;
 
-	$n_carrd_p = 8;
-	$total = $bdd->query('SELECT img_id FROM gallery');
+	$n_carrd_p = 12;
+	$total = $bdd->prepare('SELECT img_id FROM gallery WHERE img_user = ?');
+	$total->execute(array($result['user_uid']));
 	$cardTotale = $total->rowCount();
 	$pageTotal = ceil($cardTotale / $n_carrd_p);
 	if (isset($_GET['npage']) AND !empty($_GET['npage'])) {
@@ -158,17 +159,13 @@
 	$query->bindParam(":end", $n_carrd_p, PDO::PARAM_INT);
 	$query->bindParam(":uid", $result['user_uid'], PDO::PARAM_INT);
 	$query->execute();
-	if ($query->rowCount() <= 0)
-	{
-	  die ("empty");
-	}
-	
-	echo '<div class="container">';
-  	while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
-    if ($tmp > 3)
-      $tmp = 0;
-    if ($tmp == 0) 
-      echo '<div class="columns">';
+	if ($query->rowCount() >= 0) :
+		echo '<div class="container">';
+		while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
+		if ($tmp > 3)
+		$tmp = 0;
+		if ($tmp == 0) 
+		echo '<div class="columns">';
 ?>
       <div class="column is-3">
         <div class="card" style="border-radius: 5px">
@@ -221,13 +218,67 @@
         </div>
     </div>
     <?php 
-      if ($tmp == 3) 
-        echo '</div>';
-      $tmp++;
-      endwhile;
+		if ($tmp == 3) 
+			echo '</div>';
+		$tmp++;
+		endwhile;
+	endif;
+	  if ($tmp != 4)
+		  echo "</div>";
+	  if ($pageTotal > 1) :
     ?>
+	<nav class="pagination" role="navigation" aria-label="pagination">
+		<a class="pagination-previous" title="This is the first page" href="index.php?page=profile&npage=<?= $this_page - 1 ?>&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>">Previous</a>
+		<a class="pagination-next" href="index.php?page=profile&npage=<?= $this_page < $pageTotal ? $this_page += 1 : $this_page ?>&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>">Next page</a>
+		<ul class="pagination-list">
+			<?php
+			if ($pageTotal <= 4) :
+				for ($i = 1; $i <= $pageTotal; $i++) :  
+			?>
+			<li>
+			<a class="pagination-link <?php  ?> is-dark" aria-label="Page 1" aria-current="page" href="index.php?page=profile&npage=<?= $i ?>&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>"><?= $i ?></a>
+			</li>
+			<?php
+			endfor;
+			else :
+			?>
+			<?php
+			if ($this_page >= 4) :
+			?>
+			<li>
+			<a class="pagination-link" aria-label="Goto page 1" href="index.php?page=profile&npage=1&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>">1</a>
+			</li>
+			<li>
+			<span class="pagination-ellipsis">&hellip;</span>
+			</li>
+			<?php
+			endif;
+			for ($i = $this_page - 2; $i <= $this_page; $i++) :
+				if ($i == 0)
+				$i++;
+			?>
+			<li>
+			<a class="pagination-link" aria-label="Goto page 45" href="index.php?page=profile&npage=<?= $i ?>&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>" ><?= $i ?></a>
+			</li>
+			<?php
+			endfor;
+			if ($this_page < $pageTotal) :
+			?>
+			<li>
+			<span class="pagination-ellipsis">&hellip;</span>
+			</li>
+			<li>
+			<a class="pagination-link" aria-label="Goto page 86" href="index.php?page=profile&npage=<?= $pageTotal ?>&uid=<?= $result['user_uid'] ? $result['user_uid'] : 0 ?>"><?= $pageTotal ?></a>
+			</li>
+			<?php
+				endif;
+			endif;
+			?>
+		</ul>
+    </nav>
+	<?php
+		endif;
+	?>
   </div>
-  	<div class="lasuitelasuitelasuite"></div>
-  	<script type="text/javascript" src="javascript/scroll.js"></script>
   	<script type="text/javascript" src="javascript/profile.js"></script>
 </div>

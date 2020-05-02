@@ -1,11 +1,4 @@
 <?php 
-
-echo "<pre>";
-var_dump($_POST);
-var_dump($_FILES);
-var_dump($_REQUEST);
-echo "</pre>";
-
 if (!isset($_SESSION['user_uid'])) {
     header('location: '.$_SERVER['HTTP_REFERER'].'');
     die ();
@@ -13,7 +6,6 @@ if (!isset($_SESSION['user_uid'])) {
 if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['token']) AND !empty($_POST['token'])) {
     if ($_SESSION['token'] == $_POST['token']) {    
         if (isset($_FILES["input-file"]["name"]) && !empty($_FILES['input-file']['name'])) {
-            echo "<pre>cdcdcdcdcdcdcdcdcdcdc</pre>";
             $target_dir = "img/";
             $target_file = $target_dir . basename($_FILES["input-file"]["name"]);
             $uploadOk = 1;
@@ -22,7 +14,6 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
             if(isset($_POST["submit"])) {
                 $check = getimagesize($_FILES["input-file"]["tmp_name"]);
                 if($check !== false) {
-                    echo "File is an image - " . $check["mime"] . ".";
                     $uploadOk = 1;
                 } else {
                     echo "File is not an image.";
@@ -51,7 +42,6 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
             else {
                 $name = $_FILES["input-file"]["tmp_name"];
                 if (move_uploaded_file($name, $target_file)) {
-                    echo "The file ". basename( $name). " has been uploaded.";
                     $uploadOk = 1;
                 }
                 else {
@@ -63,9 +53,6 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
                 if (isset($_POST['filtre']) AND !empty($_POST['filtre']) AND $_POST['filtre'] != 'none' AND $uploadOk == 1) {
                     $filtre = "sticker/".$_POST['filtre'].'.png';
 
-                    var_dump($filtre);
-                    var_dump(file_exists($filtre));
-
                     $infos_src = @getImageSize($target_file);
                     $width = $infos_src[0];
                     $height = $infos_src[1];
@@ -76,17 +63,20 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
 
 
 
-                    //// Calcul des nouvelles dimensions
-                    //list($width_tmp, $height_tmp) = getimagesize($filtre);
-                    //$new_width = $width_tmp / 100 * $_POST['slider'];
-                    //$new_height = $height_tmp / 100  * $_POST['slider'];
-                    //
+                    //// Calcul des nouvelles dimensions 
+                    $tmp_img = imagecreatefrompng($filtre);
+                    imagesavealpha($tmp_img, true);
+                    list($width_tmp, $height_tmp) = getimagesize($filtre);
+                    $new_width = $width_tmp / 100 * $_POST['slider'];
+                    $new_height = $height_tmp / 100  * $_POST['slider'];
+
                     //// Redimensionnement
-                    //$front = imagecreatetruecolor($new_width, $new_height);
-                    //$image = imagecreatefrompng($filtre);
-                    //$black = imagecolorallocate($front, 0, 0, 0);
-                    //imagecopyresampled($front, $image, 0, 0, 0, 0, $new_width, $new_height, $width_tmp, $height_tmp);
-                    //imagecolortransparent($front, $black);
+                    $front = imagecreatetruecolor($new_width, $new_height);
+                    imagesavealpha($front, true);
+                    $trans_colour = imagecolorallocatealpha($front, 0, 0, 0, 127);
+                    imagefill($front, 0, 0, $trans_colour);
+                    imagecopyresized($front, $tmp_img, 0, 0, 0, 0, $new_width, $new_height, $width_tmp, $height_tmp);
+                    imagesavealpha($front, true);
                     
 
 
@@ -95,28 +85,25 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
                     $transparent_background = imagecolorallocatealpha($destination_finale, 0, 0, 0, 127);
                     imagefill($destination_finale, 0, 0, $transparent_background);
                     $back = imagecreatefromstring(file_get_contents(($target_file)));
-                    $front = imagecreatefrompng($filtre);
 
                     imagecopy($destination_finale, $back, 0, 0, 0, 0, $width, $height);
-                    imagecopy($destination_finale, $front, 0, 0, 0, 0, $width_filter, $height_filter);
+                    imagecopy($destination_finale, $front, 0, 0, 0, 0, $new_width, $new_height);
                     imagepng($destination_finale, $file);
 
-                    
                     unlink($target_file);
-                } else {
+                }
+                else if ($uploadOk == 1) {
                     rename($target_file, $file);
+                } else {
+                    echo "error";
                 }
             
     
                 if ($uploadOk == 1) {
                     $uid = base_convert(hash('sha256', time() . mt_rand() . $name), 16, 36);
                     $user = $_SESSION['user_uid'];
-                    echo "test {<br />".$name.'<br />'.$user.'<br />'.$uid;
                     $req = $bdd->prepare('INSERT INTO gallery(img_name, img_user, img_uid) VALUES (?, ?, ?)');
                     $req->execute(array($name, $user, $uid));
-                    echo "blalalbalblabl on est la gros";
-                    //if (!$req)
-                        var_dump($bdd->errorInfo());
                 }
             }
         }
@@ -142,18 +129,19 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
                 $height_filter = $infos_src[1];
 
 
+                $tmp_img = imagecreatefrompng($filtre);
+                imagesavealpha($tmp_img, true);
+                list($width_tmp, $height_tmp) = getimagesize($filtre);
+                $new_width = $width_tmp / 100 * $_POST['slider'];
+                $new_height = $height_tmp / 100  * $_POST['slider'];
 
-                //// Calcul des nouvelles dimensions
-                //list($width_tmp, $height_tmp) = getimagesize($filtre);
-                //$new_width = $width_tmp / 100 * $_POST['slider'];
-                //$new_height = $height_tmp / 100  * $_POST['slider'];
-                //
                 //// Redimensionnement
-                //$front = imagecreatetruecolor($new_width, $new_height);
-                //$image = imagecreatefrompng($filtre);
-                //$black = imagecolorallocate($front, 0, 0, 0);
-                //imagecopyresampled($front, $image, 0, 0, 0, 0, $new_width, $new_height, $width_tmp, $height_tmp);
-                //imagecolortransparent($front, $black);
+                $front = imagecreatetruecolor($new_width, $new_height);
+                imagesavealpha($front, true);
+                $trans_colour = imagecolorallocatealpha($front, 0, 0, 0, 127);
+                imagefill($front, 0, 0, $trans_colour);
+                imagecopyresized($front, $tmp_img, 0, 0, 0, 0, $new_width, $new_height, $width_tmp, $height_tmp);
+                imagesavealpha($front, true);
                 
 
 
@@ -162,10 +150,10 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
                 $transparent_background = imagecolorallocatealpha($destination_finale, 0, 0, 0, 127);
                 imagefill($destination_finale, 0, 0, $transparent_background);
                 $back = imagecreatefromstring(file_get_contents(($imgName)));
-                $front = imagecreatefrompng($filtre);
+                //$front = imagecreatefrompng($filtre);
 
                 imagecopy($destination_finale, $back, 0, 0, 0, 0, $width, $height);
-                imagecopy($destination_finale, $front, 0, 0, 0, 0, $width_filter, $height_filter);
+                imagecopy($destination_finale, $front, 0, 0, 0, 0, $new_width, $new_height);
                 imagepng($destination_finale, $file);
                 unlink($imgName);
             } else {
@@ -177,9 +165,10 @@ if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_POST['t
             $req = $bdd->prepare('INSERT INTO gallery(img_name, img_user, img_uid) VALUES (?, ?, ?)');
             $req->execute(array($name, $user, $uid));
         }
+        header("Location: index.php");
     }
     else
-    echo "<script>alert('pas les memem')</script>";
+        echo "<script>alert('pas les memem')</script>";
 }
 else
     echo "<script>alert('vide')</script>";

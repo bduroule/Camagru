@@ -15,7 +15,7 @@
          <article class="tile is-child box">
           <div style="display: block; width: 100%; height: 100%; min-height: 720px;">
             <div style="display: none; width: 100%; height: 100%;" id="blah" >
-                <img src="sticker/dabdog.png" style="width: 180%;" id="filtre">
+                <img src="" style="width: 50%;" id="filtre">
             </div>
             <canvas hidden id="canvas" style="width: 100%; height: 100%;"></canvas>
             <video id="video" autoplay="true" style="width: 100%; height: 100%; border-radius: 3px; postion= absolute; bot: 20px;">

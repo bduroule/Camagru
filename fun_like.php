@@ -4,6 +4,8 @@
         header('location: '.$_SERVER['HTTP_REFERER'].'');
         die ();
     }
+    echo $_GET['dd']."<br />";
+    echo $_SESSION['token'];
     if (isset($_SESSION['token']) AND !empty($_SESSION['token']) AND isset($_GET['dd']) AND !empty($_GET['dd'])) {
         if ($_SESSION['token'] == $_GET['dd']) {
             $img_id = @$_GET['img_id'];
