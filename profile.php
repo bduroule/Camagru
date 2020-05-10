@@ -159,13 +159,15 @@
 	$query->bindParam(":end", $n_carrd_p, PDO::PARAM_INT);
 	$query->bindParam(":uid", $result['user_uid'], PDO::PARAM_INT);
 	$query->execute();
+	//var_dump($test['img_user']);var_dump($test['img_user']);
 	if ($query->rowCount() >= 0) :
 		echo '<div class="container">';
 		while ($ligne = $query->fetch(PDO::FETCH_ASSOC)) :
-		if ($tmp > 3)
-		$tmp = 0;
-		if ($tmp == 0) 
-		echo '<div class="columns">';
+			if ($result['user_uid'] == $ligne['img_user']) :
+				if ($tmp > 3)
+				$tmp = 0;
+				if ($tmp == 0) 
+				echo '<div class="columns">';
 ?>
       <div class="column is-3">
         <div class="card" style="border-radius: 5px">
@@ -218,9 +220,10 @@
         </div>
     </div>
     <?php 
-		if ($tmp == 3) 
-			echo '</div>';
-		$tmp++;
+			if ($tmp == 3) 
+				echo '</div>';
+			$tmp++;
+			endif;
 		endwhile;
 	endif;
 	  if ($tmp != 4)

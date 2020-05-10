@@ -15,7 +15,7 @@ try {
 	$bdd->exec("SET NAMES 'UTF8'");
 }
 catch (Exception $e) {
-	echo "test 4<br />";
+	//require_once "setup.php";
 	die('Erreur : ' . $e->getMessage());
 }
 ?>
